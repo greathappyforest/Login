@@ -1,19 +1,25 @@
 var express = require('express');
 var router = express.Router();
-var path = require('path');
+var mongojs = require('mongojs');
+var db = mongojs('passportapp', ['users']);
+var bcrypt = require('bcryptjs');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
-
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+// Login Page - GET
+router.get('/login', function(req, res) {
+    res.render('login');
 });
 
-router.get('/register', function(req, res, next) {
-  res.render('register');
+// Register Page - GET
+router.get('/register', function(req, res) {
+    res.render('register');
 });
 
-router.get('/login', function(req, res, next) {
-  res.render('login');
+router.post('/register', function(req, res) {
+
+    console.log('12121');
+
 });
 
 module.exports = router;
