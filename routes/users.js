@@ -37,37 +37,39 @@ router.post('/register', function(req, res) {
     req.checkBody('password2', 'Confirm password can not be empty').notEmpty();
     req.checkBody('password2', 'Confirm password must be the same as password you entered').equals(password);
 
-    var newUser = {
-        name: name,
-        email: email,
-        username: username,
-        password: password
-    };
+
     var errors = req.validationErrors();
     //   console.log(errors);
     console.log('registering user');
-    Account.register(new Account(newUser), req.body.password, function(err) {
-        if (errors) {
-            console.log('Register vaildation failed');
-            // do something with the errors
-            res.render('register', {
-                errors: errors,
-                name: name,
-                email: email,
-                username: username,
-                password: password,
-                password2: password2
-            });
+
+    if (errors) {
+        console.log('Register vaildation failed');
+        // do something with the errors
+        res.render('register', {
+            errors: errors,
+            name: name,
+            email: email,
+            username: username,
+            password: password,
+            password2: password2
+        });
 
 
-        } else {
+    } else {
+        var newUser = {
+            name: name,
+            email: email,
+            username: username,
+            password: password
+        };
+        console.log('Register vaildation passed!');
+        Account.register(new Account(newUser), req.body.password, function(err) {
+            console.log('user registered!');
+            res.redirect('/');
+        });
+    }
 
-            console.log('Register vaildation passed!');
 
-        }
-        console.log('user registered!');
-        res.redirect('/');
-    });
 
     //-------------------------------------------------------------------------------------
 
